@@ -8,10 +8,17 @@ public class FinanceManager {
     private String filePath;
     private double totalAmount;
     private int transactionCount = 0;
+    private String transactionsFilePath; // New variable
+    private String transactionCountFilePath; // New variable
+    private String totalExpensesFilePath; // New variable
+
     public FinanceManager(String filePath) {
         this.transactions = new ArrayList<>();
         this.filePath = filePath;
         this.totalAmount = 0.0;
+        this.transactionsFilePath = "transactions.txt"; // Initialize the new variable
+        this.transactionCountFilePath = "transactionCount.txt"; // Initialize the new variable
+        this.totalExpensesFilePath = "totalExpenses.txt"; // Initialize the new variable
         loadTransactions();
         loadTransactionCount(); // Carga el conteo de transacciones al iniciar el programa
         loadTotalAmount();
@@ -20,6 +27,27 @@ public class FinanceManager {
         try (PrintWriter writer = new PrintWriter(new File("transactionCount.txt"))) {
             writer.println(transactionCount);
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    public void resetData() {
+        // Clear the transactions
+        transactions.clear();
+
+        // Reset the transaction count and total expenses
+        try {
+            PrintWriter transactionsWriter = new PrintWriter(transactionsFilePath);
+            PrintWriter transactionCountWriter = new PrintWriter(transactionCountFilePath);
+            PrintWriter totalExpensesWriter = new PrintWriter("despesa.txt");
+
+            transactionsWriter.print(""); // Borrar todo el contenido del archivo de transacciones
+            transactionCountWriter.print("0"); // Establecer el conteo de transacciones a 0
+            totalExpensesWriter.print("Total Amount: 0"); // Establecer el total de gastos a 0
+
+            transactionsWriter.close();
+            transactionCountWriter.close();
+            totalExpensesWriter.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
