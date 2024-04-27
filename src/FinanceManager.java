@@ -1,11 +1,12 @@
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class FinanceManager {
     private List<Transaction> transactions;
-    private String filePath;
+    private String filePath = "transactions.db";
     private double totalAmount;
     private int transactionCount = 0;
     private String transactionsFilePath; // New variable
@@ -29,6 +30,17 @@ public class FinanceManager {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+    public List<Transaction> sortByDate() {
+        List<Transaction> sortedTransactions = new ArrayList<>(transactions);
+        sortedTransactions.sort(Comparator.comparing(Transaction::getDate));
+        return sortedTransactions;
+    }
+
+    public List<Transaction> sortByType() {
+        List<Transaction> sortedTransactions = new ArrayList<>(transactions);
+        sortedTransactions.sort(Comparator.comparing(Transaction::isIncome));
+        return sortedTransactions;
     }
     public void resetData() {
         // Clear the transactions
@@ -74,9 +86,12 @@ public class FinanceManager {
         }
     }
     public void saveTransactions() {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath, true))) {
-            Transaction transaction = transactions.get(transactions.size() - 1);
-            writer.println(transactionCount + " Quantitat: " + transaction.getAmount() + ", Etiqueta: " + transaction.getLabel() + ", Data: " + transaction.getDate() + ", " + (transaction.isIncome() ? "Ingrés" : "Despesa"));
+        try (RandomAccessFile raf = new RandomAccessFile(filePath, "rw")) {
+            for (Transaction transaction : transactions) {
+                byte[] bytes = transaction.toBytes();
+                raf.writeInt(bytes.length);
+                raf.write(bytes);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -100,20 +115,24 @@ public class FinanceManager {
         saveTransactionCount(); // Guarda el conteo de transacciones después de agregar una nueva
     }
     public void loadTransactions() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            transactionCount = 0; // reset transactionCount
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(", ");
-                if (parts.length < 5) {
-                    continue;
+        transactions = new ArrayList<>();
+        File file = new File("transactions.db");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {
+            while (raf.getFilePointer() < raf.length()) {
+                int length = raf.readInt();
+                byte[] bytes = new byte[length];
+                raf.readFully(bytes);
+                Transaction transaction = Transaction.fromBytes(bytes);
+                if (transaction != null) {
+                    transactions.add(transaction);
                 }
-                transactionCount++; // increment transactionCount for each transaction read
-                double amount = Double.parseDouble(parts[1].split(": ")[1]);
-                String label = parts[2].split(": ")[1];
-                LocalDate date = LocalDate.parse(parts[3].split(": ")[1]);
-                boolean isIncome = parts[4].trim().equalsIgnoreCase("Ingrés");
-                transactions.add(new Transaction(amount, label, date, isIncome));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -144,4 +163,4 @@ public class FinanceManager {
         this.totalAmount = totalAmount;
     }
 
-    }
+}
