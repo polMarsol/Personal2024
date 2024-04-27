@@ -116,7 +116,7 @@ public class FinanceManager {
     }
     public void loadTransactions() {
         transactions = new ArrayList<>();
-        File file = new File("transactions.db");
+        File file = new File(filePath);
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -124,16 +124,19 @@ public class FinanceManager {
                 e.printStackTrace();
             }
         }
-        try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {
+        try (RandomAccessFile raf = new RandomAccessFile(filePath, "r")) {
             while (raf.getFilePointer() < raf.length()) {
-                int length = raf.readInt();
-                byte[] bytes = new byte[length];
-                raf.readFully(bytes);
-                Transaction transaction = Transaction.fromBytes(bytes);
-                if (transaction != null) {
-                    transactions.add(transaction);
-                }
+                int size = raf.readInt(); // Read the size of the next Transaction object
+                byte[] data = new byte[size]; // Create a byte array of the correct size
+                raf.readFully(data); // Read the Transaction object
+                // Deserialize the Transaction object and add it to the list
+                Transaction transaction = Transaction.fromBytes(data);
+                transactions.add(transaction);
             }
+        } catch (EOFException e) {
+            // This exception is thrown when the end of the file is reached.
+            // In this case, we have read all Transaction objects, so we can just return.
+            return;
         } catch (IOException e) {
             e.printStackTrace();
         }

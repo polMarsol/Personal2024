@@ -8,6 +8,18 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+        Dimension buttonSize = new Dimension(100, 50);
+        try {
+            // Establecer la apariencia de los componentes de la interfaz de usuario en Metal
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Windows".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         FinanceManager manager = new FinanceManager("transactions.db");
         TransactionForm form = new TransactionForm(manager);
 
@@ -15,7 +27,12 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 200);
 
-        JPanel panel = new JPanel(); // Declare and initialize panel here
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 5, 5, 5); // Margen alrededor de los componentes
+
 
         JButton addButton = new JButton("Añadir transacción");
         addButton.addActionListener(new ActionListener() {
@@ -94,13 +111,36 @@ public class Main {
             }
         });
 
-        panel.add(addButton);
-        panel.add(sortButton);
-        panel.add(exitButton);
-        panel.add(resetButton);
-        panel.add(viewButton);
-        panel.add(dateCheckBox);
-        panel.add(typeCheckBox);
+
+// First row
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(addButton, gbc);
+
+        gbc.gridx = 1;
+        panel.add(viewButton, gbc);
+
+// Second row
+        gbc.gridx = 1/2;
+        gbc.gridy = 1;
+        panel.add(sortButton, gbc);
+
+// Third row
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panel.add(dateCheckBox, gbc);
+
+        gbc.gridx = 1;
+        panel.add(typeCheckBox, gbc);
+
+// Fourth row
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        panel.add(resetButton, gbc);
+
+        gbc.gridx = 1;
+        panel.add(exitButton, gbc);
+
         frame.add(panel);
 
         frame.setVisible(true);
