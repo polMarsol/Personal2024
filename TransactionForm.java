@@ -13,13 +13,12 @@ public class TransactionForm extends JFrame {
     private JCheckBox isIncomeCheckBox;
     private JButton submitButton;
     private JButton cancelButton;
-    private JButton resetButton; // Nuevo botón de reset
     private FinanceManager manager;
 
     public TransactionForm(FinanceManager manager) {
         this.manager = manager;
 
-        setLayout(new GridLayout(7, 2)); // Modificado para incluir el nuevo botón
+        setLayout(new GridLayout(6, 2)); // Modificado para excluir el botón de reset
 
         add(new JLabel("Quantitat:"));
         amountField = new JTextField();
@@ -77,32 +76,6 @@ public class TransactionForm extends JFrame {
             }
         });
         add(cancelButton);
-
-        // Nuevo botón de reset
-        resetButton = new JButton("Reset");
-        resetButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                manager.resetData();
-                amountField.setText("");
-                labelField.setText("");
-                dateField.setText("");
-                isIncomeCheckBox.setSelected(false);
-
-                // Cerrar el programa actual
-                System.exit(0);
-
-                // Iniciar una nueva instancia del programa
-                // Nota: Reemplaza "Main" con el nombre de tu clase principal
-                String[] cmd = {"java", "Main"};
-                try {
-                    Runtime.getRuntime().exec(cmd);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
-        add(resetButton);
 
         pack();
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
