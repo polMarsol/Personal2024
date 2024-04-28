@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,9 +15,25 @@ public class TransactionForm extends JFrame {
     private JButton submitButton;
     private JButton cancelButton;
     private FinanceManager manager;
+    private Transaction transaction;
+    private JComboBox<String> currencyComboBox; // New field
+
+
+    // Rest of your code...
+    public JComboBox<String> getCurrencyComboBox() {
+        return currencyComboBox;
+    }
+    public Transaction getTransaction() {
+        return this.transaction;
+    }
 
     public TransactionForm(FinanceManager manager) {
         this.manager = manager;
+        add(new JLabel("Moneda:"));
+        String[] currencies = { "USD", "EUR", "JPY", "GBP" }; // Add more currencies as needed
+        currencyComboBox = new JComboBox<>(currencies);
+        currencyComboBox.setSelectedIndex(0); // Default to the first currency
+        add(currencyComboBox);
 
         setLayout(new GridLayout(6, 2)); // Modificado para excluir el botón de reset
 

@@ -1,3 +1,4 @@
+
 import java.io.*;
 import java.time.LocalDate;
 
@@ -6,12 +7,19 @@ public class Transaction implements Serializable {
     private String label;
     private LocalDate date;
     private boolean isIncome;
-
+    private String currency; // New field
     public Transaction(double amount, String label, LocalDate date, boolean isIncome) {
         this.amount = amount;
         this.label = label;
         this.date = date;
         this.isIncome = isIncome;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
     public byte[] toBytes() {
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -49,6 +57,7 @@ public class Transaction implements Serializable {
     }
     @Override
     public String toString() {
-        return "Quantitat: " + amount + ", Etiqueta: " + label + ", Data: " + date + (isIncome ? ", Ingrés" : ", Despesa");
+        return "Quantitat: " + amount + ", Etiqueta: " + label + ", Data: " + date + (isIncome ? ", Ingrés" : ", Despesa") + ", Total: " + getAmount();
     }
+
 }
