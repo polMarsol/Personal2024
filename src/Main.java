@@ -92,7 +92,7 @@ public class Main {
             public void actionPerformed(ActionEvent e) {
                 List<Transaction> allTransactions = manager.getTransactions();
 
-                JFrame viewFrame = new JFrame("Totes las transaccionss");
+                JFrame viewFrame = new JFrame("Totes las transaccions");
                 viewFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 viewFrame.setSize(400, 200);
 
