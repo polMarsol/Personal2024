@@ -26,6 +26,20 @@
         <button type="submit" class="btn btn-primary">Filtrar</button>
     </form>
 
+    <form method="POST" action="/export" class="mb-4">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="start_date_export">Fecha de Inicio</label>
+                <input type="date" class="form-control" id="start_date_export" name="start_date" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="end_date_export">Fecha de Fin</label>
+                <input type="date" class="form-control" id="end_date_export" name="end_date" required>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success">Exportar CSV</button>
+    </form>
+
     <div class="row">
         <div class="col-md-6">
             <h2>Gráfico de Velocidades</h2>
@@ -37,6 +51,15 @@
             <h2>Gráfico de Densidades</h2>
             <div id="densidad-plot">
                 {{ plot_densidades|safe }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <h2>Mapa de Velocidades del Viento Solar</h2>
+            <div id="map-plot">
+                {{ plot_map|safe }}
             </div>
         </div>
     </div>
