@@ -1,6 +1,3 @@
-# Crear un archivo README.md con el contenido proporcionado
-
-readme_content = """
 # Space Climate Web
 
 ## Descripción
@@ -72,26 +69,26 @@ space_climate_web/
 
 1. **Conexión a la base de datos:**
 
-Se establece una conexión a la base de datos SQLite clima_espacial.db para obtener datos sobre el viento solar.
+    Se establece una conexión a la base de datos SQLite clima_espacial.db para obtener datos sobre el viento solar.
 
 2. **Visualización de datos:**
 
-Los datos se muestran en gráficos interactivos utilizando Plotly.
+    Los datos se muestran en gráficos interactivos utilizando Plotly.
 
 3. **Exportación de datos:**
 
-Se implementa una funcionalidad para exportar datos a formato CSV.
+    Se implementa una funcionalidad para exportar datos a formato CSV.
 
 4. **Interfaz de usuario:**
 
-Se utiliza Jinja2 para generar HTML dinámico y mostrar los datos en la aplicación web.
+    Se utiliza Jinja2 para generar HTML dinámico y mostrar los datos en la aplicación web.
 
 
 ## Contribuciones
-Si deseas contribuir a este proyecto, por favor haz un fork del repositorio y envía un pull request con tus cambios.
+    Si deseas contribuir a este proyecto, por favor haz un fork del repositorio y envía un pull request con tus cambios.
 
 ## Licencia
-Este proyecto está bajo la Licencia MIT. Consulta el archivo LICENSE para más información.
+    Este proyecto está bajo la Licencia MIT. Consulta el archivo LICENSE para más información.
 
 ## Contacto
-Si tienes preguntas o sugerencias, por favor contacta a @polMarsol.
+    Si tienes preguntas o sugerencias, por favor contacta a @polMarsol.
