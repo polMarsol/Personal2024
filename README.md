@@ -85,10 +85,12 @@ space_climate_web/
 
 
 ## Contribuciones
-    Si deseas contribuir a este proyecto, por favor haz un fork del repositorio y envía un pull request con tus cambios.
+Si deseas contribuir a este proyecto, por favor haz un fork del repositorio y envía un pull request con tus cambios.
+
 
 ## Licencia
-    Este proyecto está bajo la Licencia MIT. Consulta el archivo LICENSE para más información.
+Este proyecto está bajo la Licencia MIT. Consulta el archivo 
+[MIT LICENSE](https://choosealicense.com/licenses/mit/) para más información.
 
 ## Contacto
-    Si tienes preguntas o sugerencias, por favor contacta a @polMarsol.
+Si tienes preguntas o sugerencias, por favor contacta a @polMarsol.
