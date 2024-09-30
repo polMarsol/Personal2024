@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gráfico de Velocidad del Viento Solar</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h1>Gráfico de Velocidad del Viento Solar</h1>
+    <div id="graph"></div>
+    <script>
+        var figure = {{ figure | safe }};
+        Plotly.newPlot('graph', figure.data, figure.layout);
+    </script>
+</body>
+</html>
