@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import sqlite3
 import numpy as np
 import pandas as pd
@@ -8,12 +8,16 @@ import plotly.io as pio
 app = Flask(__name__)
 
 # Función para obtener datos de la base de datos
-def get_data():
+def get_data(start_date=None, end_date=None):
     conn = sqlite3.connect('clima_espacial.db')
     c = conn.cursor()
     
-    # Consultar los datos de la tabla
-    c.execute('SELECT time_tag, speed, dens FROM viento_solar')
+    # Consultar los datos de la tabla con rango de fechas
+    if start_date and end_date:
+        c.execute('SELECT time_tag, speed, dens FROM viento_solar WHERE time_tag BETWEEN ? AND ?', (start_date, end_date))
+    else:
+        c.execute('SELECT time_tag, speed, dens FROM viento_solar')
+    
     data = c.fetchall()
     
     # Cerrar la conexión
@@ -48,11 +52,18 @@ def create_plot(fechas, velocidades, densidades):
 
     return plot_velocidades, plot_densidades
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    fechas, velocidades, densidades = get_data()
+    if request.method == 'POST':
+        start_date = request.form.get('start_date')
+        end_date = request.form.get('end_date')
+        fechas, velocidades, densidades = get_data(start_date, end_date)
+    else:
+        fechas, velocidades, densidades = get_data()
+
     combined_data = combine_lists(fechas, velocidades, densidades)
     plot_velocidades, plot_densidades = create_plot(fechas, velocidades, densidades)
+    
     return render_template('index.html', combined_data=combined_data, plot_velocidades=plot_velocidades, plot_densidades=plot_densidades)
 
 if __name__ == '__main__':
